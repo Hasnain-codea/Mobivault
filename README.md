@@ -1,2 +1,1 @@
-# Mobivault
-A marketplace to buy and sell quality second-hand smartphones at trusted prices.
+A trusted marketplace to buy and sell new & second-hand smartphones at great prices.
