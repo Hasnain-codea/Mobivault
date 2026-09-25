@@ -1,0 +1,3293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080b12">
+    <meta name="description" content="MobileMart - New and second-hand smartphone marketplace">
+    <title>MobileMart | Smartphone Marketplace</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #070a10;
+            --panel: #0d121b;
+            --panel-2: #121a26;
+            --line: #243247;
+            --text: #f5f7fb;
+            --muted: #93a2b8;
+            --blue: #3b82f6;
+            --blue-2: #60a5fa;
+            --green: #22c55e;
+            --red: #ef4444;
+            --yellow: #f59e0b;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Roboto, Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 15% -10%, #163d76 0, transparent 32%),
+                radial-gradient(circle at 100% 20%, #24164f 0, transparent 28%),
+                var(--bg);
+            line-height: 1.5;
+        }
+
+        body.locked {
+            overflow: hidden;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button,
+        a {
+            cursor: pointer;
+        }
+
+        button {
+            color: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+        }
+
+        .topbar {
+            border-bottom: 1px solid var(--line);
+            background: #090e17;
+            color: #aab8cb;
+            font-size: 13px;
+        }
+
+        .topbar .container {
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(7, 11, 18, 0.88);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .head {
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 21px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .logo b {
+            color: var(--blue-2);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--blue), #7c3aed);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.28);
+        }
+
+        .search {
+            flex: 1;
+            max-width: 620px;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid var(--line);
+            border-right: 0;
+            border-radius: 13px 0 0 13px;
+            outline: none;
+            color: var(--text);
+            background: var(--panel);
+        }
+
+        .search input:focus {
+            border-color: var(--blue);
+        }
+
+        .search button {
+            width: 55px;
+            border: 0;
+            border-radius: 0 13px 13px 0;
+            background: var(--blue);
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--panel);
+            color: white;
+        }
+
+        .icon-btn:hover {
+            border-color: #45658e;
+            background: var(--panel-2);
+        }
+
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -5px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            display: grid;
+            place-items: center;
+            border-radius: 99px;
+            background: var(--red);
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .nav {
+            border-top: 1px solid #172235;
+        }
+
+        .nav .container {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+        }
+
+        .nav a {
+            padding: 12px 14px;
+            color: #bac6d7;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        .hero {
+            padding: 62px 0 38px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.12fr 0.88fr;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border: 1px solid #2b5fa5;
+            border-radius: 999px;
+            color: #a8ceff;
+            background: #15315a;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .hero h1 {
+            margin: 17px 0;
+            font-size: clamp(40px, 6vw, 68px);
+            line-height: 1.02;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            color: var(--blue-2);
+        }
+
+        .hero p {
+            max-width: 650px;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .hero-actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            min-height: 43px;
+            padding: 11px 17px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            font-weight: 800;
+        }
+
+        .primary {
+            background: var(--blue);
+            border-color: var(--blue);
+            color: white;
+        }
+
+        .primary:hover {
+            background: #2563eb;
+        }
+
+        .secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--line);
+            color: white;
+        }
+
+        .secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-card {
+            padding: 25px;
+            border: 1px solid var(--line);
+            border-radius: 25px;
+            background: linear-gradient(145deg, #111d30, #0b111c);
+            box-shadow: var(--shadow);
+        }
+
+        .phone-show {
+            height: 285px;
+            display: grid;
+            place-items: center;
+            border-radius: 20px;
+            background:
+                radial-gradient(circle at 50% 30%, #386fe1, transparent 28%),
+                linear-gradient(145deg, #172c50, #0a0f17);
+            font-size: 120px;
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.45);
+        }
+
+        .hero-stats {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .stat {
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            text-align: center;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 20px;
+        }
+
+        .stat span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .section {
+            padding: 38px 0;
+        }
+
+        .section-head {
+            margin-bottom: 18px;
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .section-head h2 {
+            font-size: 29px;
+        }
+
+        .section-head p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .deal {
+            padding: 22px;
+            border: 1px solid #234d86;
+            border-radius: 20px;
+            background: linear-gradient(120deg, #122c54, #111827);
+        }
+
+        .deal-head {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .timer {
+            display: flex;
+            gap: 6px;
+        }
+
+        .time {
+            min-width: 48px;
+            padding: 7px 8px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: #07101e;
+            text-align: center;
+        }
+
+        .time b {
+            display: block;
+        }
+
+        .time small {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .filters {
+            margin-bottom: 18px;
+            padding: 14px;
+            display: grid;
+            grid-template-columns: 2fr repeat(4, 1fr) auto;
+            gap: 9px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--panel);
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field input,
+        .field select,
+        .field textarea,
+        .form-control {
+            width: 100%;
+            padding: 11px;
+            outline: none;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            color: var(--text);
+            background: #080e18;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus,
+        .form-control:focus {
+            border-color: var(--blue);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            min-width: 0;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: linear-gradient(180deg, #101927, #0c131e);
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #36547d;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.32);
+        }
+
+        .photo {
+            height: 205px;
+            position: relative;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(145deg, #172235, #080c13);
+        }
+
+        .phone-art {
+            font-size: 78px;
+            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.5));
+        }
+
+        .tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 5px 8px;
+            border-radius: 8px;
+            background: var(--green);
+            color: #04140a;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        .heart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: rgba(8, 13, 22, 0.87);
+            color: white;
+        }
+
+        .heart.on {
+            color: #ff5c76;
+        }
+
+        .card-body {
+            padding: 14px;
+        }
+
+        .brand {
+            color: #7daeff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .card h3 {
+            margin: 3px 0 7px;
+            font-size: 16px;
+        }
+
+        .condition {
+            color: #b7c4d5;
+            font-size: 12px;
+        }
+
+        .rating {
+            margin: 8px 0;
+            color: #ffd166;
+            font-size: 12px;
+        }
+
+        .rating span {
+            color: var(--muted);
+        }
+
+        .price {
+            margin: 9px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .price strong {
+            font-size: 20px;
+        }
+
+        .old {
+            color: #64748b;
+            font-size: 12px;
+            text-decoration: line-through;
+        }
+
+        .discount {
+            color: #4ade80;
+            font-size: 11px;
+        }
+
+        .specs {
+            margin: 8px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .spec {
+            padding: 5px 7px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 7px;
+            color: #b7c4d5;
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 10px;
+        }
+
+        .card-actions {
+            margin-top: 11px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px;
+        }
+
+        .card-actions button {
+            padding: 9px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .card-actions button:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .card-actions .buy {
+            border-color: var(--blue);
+            background: var(--blue);
+        }
+
+        .empty {
+            display: none;
+            padding: 50px 15px;
+            border: 1px dashed var(--line);
+            border-radius: 16px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .empty.show {
+            display: block;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .feature {
+            padding: 22px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: linear-gradient(180deg, #101927, #0c131e);
+        }
+
+        .feature-icon {
+            margin-bottom: 8px;
+            font-size: 30px;
+        }
+
+        .feature p {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .sell {
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border: 1px solid #244c7e;
+            border-radius: 22px;
+            background: linear-gradient(110deg, #102b52, #101827);
+        }
+
+        .sell p {
+            margin-top: 5px;
+            color: var(--muted);
+        }
+
+        .footer {
+            margin-top: 45px;
+            padding: 35px 0;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 25px;
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .footer a {
+            display: block;
+            margin: 7px 0;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+
+        .copy {
+            margin-top: 25px;
+            padding-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--line);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(0, 0, 0, 0.62);
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            z-index: 70;
+            width: min(450px, 94vw);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--line);
+            background: #0b121d;
+            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
+            transition: 0.25s;
+        }
+
+        .drawer.show {
+            right: 0;
+        }
+
+        .drawer-head {
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .drawer-body {
+            flex: 1;
+            padding: 15px;
+            overflow: auto;
+        }
+
+        .drawer-foot {
+            padding: 15px;
+            border-top: 1px solid var(--line);
+        }
+
+        .close {
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+        }
+
+        .cart-row {
+            padding: 12px 0;
+            display: grid;
+            grid-template-columns: 55px 1fr auto;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .mini-photo {
+            width: 55px;
+            height: 55px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: #121c2c;
+            font-size: 28px;
+        }
+
+        .cart-row h4 {
+            font-size: 13px;
+        }
+
+        .cart-row p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .qty {
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .qty button {
+            width: 25px;
+            height: 25px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            padding: 20px;
+            overflow: auto;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.62);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: min(780px, 100%);
+            position: relative;
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: #0b121d;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-head {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .detail {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 22px;
+        }
+
+        .detail-photo {
+            min-height: 300px;
+            display: grid;
+            place-items: center;
+            border-radius: 16px;
+            background: linear-gradient(145deg, #17243a, #070b11);
+            font-size: 105px;
+        }
+
+        .detail p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .big-price {
+            margin: 10px 0;
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .info-grid {
+            margin: 13px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .info {
+            padding: 9px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .info small {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .form-grid label {
+            color: #b9c6d7;
+            font-size: 12px;
+        }
+
+        .form-grid input,
+        .form-grid select,
+        .form-grid textarea {
+            width: 100%;
+            margin-top: 5px;
+            padding: 10px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            outline: none;
+            color: white;
+            background: #070d16;
+        }
+
+        .form-grid textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .compare-table th,
+        .compare-table td {
+            padding: 9px;
+            border: 1px solid var(--line);
+            text-align: left;
+        }
+
+        .compare-table th {
+            color: #8fbdff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            z-index: 100;
+            padding: 12px 16px;
+            border: 1px solid #35557d;
+            border-radius: 11px;
+            color: white;
+            background: #111c2b;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, 20px);
+            transition: 0.2s;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .mobile-nav {
+            display: none;
+        }
+
+        @media (max-width: 1000px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .filters {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .filters .wide {
+                grid-column: 1 / -1;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-card {
+                display: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .topbar .container {
+                justify-content: center;
+            }
+
+            .topbar .hide-mobile {
+                display: none;
+            }
+
+            .head {
+                min-height: 65px;
+                gap: 8px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+            }
+
+            .search {
+                order: 3;
+                flex-basis: 100%;
+                display: none;
+            }
+
+            .head.search-open {
+                flex-wrap: wrap;
+                padding: 8px 0;
+            }
+
+            .head.search-open .search {
+                display: flex;
+            }
+
+            .actions {
+                margin-left: auto;
+            }
+
+            .actions .icon-btn:nth-child(2) {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: grid;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 38px 0;
+            }
+
+            .hero h1 {
+                font-size: 43px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .photo {
+                height: 165px;
+            }
+
+            .phone-art {
+                font-size: 60px;
+            }
+
+            .card-body {
+                padding: 11px;
+            }
+
+            .card h3 {
+                font-size: 14px;
+            }
+
+            .price strong {
+                font-size: 17px;
+            }
+
+            .card-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .filters .reset {
+                grid-column: 1 / -1;
+            }
+
+            .sell {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .copy {
+                display: block;
+            }
+
+            .copy span {
+                display: block;
+                margin: 4px 0;
+            }
+
+            .detail {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-photo {
+                min-height: 220px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .mobile-nav {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: -310px;
+                z-index: 75;
+                width: 290px;
+                height: 100%;
+                padding: 18px;
+                border-right: 1px solid var(--line);
+                background: #0b121d;
+                transition: 0.25s;
+            }
+
+            .mobile-nav.show {
+                left: 0;
+            }
+
+            .mobile-links a {
+                display: block;
+                padding: 13px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+        }
+
+        @media (max-width: 430px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .section-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .filters .wide,
+            .filters .reset {
+                grid-column: auto;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions .icon-btn {
+                width: 37px;
+                height: 37px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div class="container">
+            <span>🛡️ Verified marketplace demo</span>
+            <span class="hide-mobile">
+                🚚 New + second-hand phones • Compare • Wishlist • Cart
+            </span>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container head" id="head">
+
+            <button class="icon-btn mobile-menu" id="menuBtn">
+                ☰
+            </button>
+
+            <a class="logo" href="#home">
+                <span class="logo-icon">📱</span>
+                Mobile<b>Mart</b>
+            </a>
+
+            <div class="search">
+                <input
+                    id="globalSearch"
+                    type="search"
+                    placeholder="Search iPhone, Samsung, OnePlus..."
+                    autocomplete="off"
+                >
+                <button id="globalSearchBtn">🔎</button>
+            </div>
+
+            <div class="actions">
+
+                <button class="icon-btn" id="searchBtn" title="Search">
+                    🔎
+                </button>
+
+                <button class="icon-btn" id="wishBtn" title="Wishlist">
+                    ♡
+                    <span class="badge" id="wishCount">0</span>
+                </button>
+
+                <button class="icon-btn" id="cartBtn" title="Cart">
+                    🛒
+                    <span class="badge" id="cartCount">0</span>
+                </button>
+
+                <button class="icon-btn" id="compareBtn" title="Compare">
+                    ⚖️
+                </button>
+
+            </div>
+        </div>
+
+        <nav class="nav">
+            <div class="container">
+                <a class="active" href="#home">Home</a>
+                <a href="#phones">All Phones</a>
+                <a href="#newPhones">New Mobiles</a>
+                <a href="#deals">Deals</a>
+                <a href="#sell">Sell Your Phone</a>
+                <a href="#why">Why MobileMart</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="mobile-nav" id="mobileNav">
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:12px;
+            "
+        >
+            <b>MobileMart</b>
+
+            <button class="close" id="menuClose">
+                ✕
+            </button>
+        </div>
+
+        <div class="mobile-links">
+            <a href="#home">🏠 Home</a>
+            <a href="#phones">📱 All Phones</a>
+            <a href="#newPhones">✨ New Mobiles</a>
+            <a href="#deals">🔥 Deals</a>
+            <a href="#sell">💰 Sell Your Phone</a>
+            <a href="#why">🛡️ Why MobileMart</a>
+        </div>
+    </div>
+
+    <main id="home">
+
+        <section class="hero">
+            <div class="container hero-grid">
+
+                <div>
+
+                    <span class="pill">
+                        ✓ PROFESSIONAL PHONE MARKETPLACE
+                    </span>
+
+                    <h1>
+                        Buy your next phone.
+                        <br>
+                        <span>Pay less.</span>
+                    </h1>
+
+                    <p>
+                        Discover new and second-hand smartphones,
+                        compare specifications, save favourites,
+                        add products to your cart and create your own
+                        phone listing.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a class="btn primary" href="#phones">
+                            Browse Phones →
+                        </a>
+
+                        <button class="btn secondary" id="heroSell">
+                            Sell My Phone
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="hero-card">
+
+                    <div class="phone-show">
+                        📱
+                    </div>
+
+                    <div class="hero-stats">
+
+                        <div class="stat">
+                            <strong id="statPhones">0</strong>
+                            <span>Listings</span>
+                        </div>
+
+                        <div class="stat">
+                            <strong>4.7★</strong>
+                            <span>Average rating</span>
+                        </div>
+
+                        <div class="stat">
+                            <strong>24/7</strong>
+                            <span>Demo access</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="section" id="deals">
+            <div class="container">
+
+                <div class="deal">
+
+                    <div class="deal-head">
+
+                        <div>
+                            <h2>🔥 Second-Hand Deals</h2>
+                            <p style="color:var(--muted);">
+                                Limited demo offers on selected phones
+                            </p>
+                        </div>
+
+                        <div class="timer">
+
+                            <div class="time">
+                                <b id="hh">08</b>
+                                <small>HRS</small>
+                            </div>
+
+                            <div class="time">
+                                <b id="mm">30</b>
+                                <small>MIN</small>
+                            </div>
+
+                            <div class="time">
+                                <b id="ss">00</b>
+                                <small>SEC</small>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="grid" id="dealGrid"></div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="phones">
+            <div class="container">
+
+                <div class="section-head">
+                    <div>
+                        <h2>📱 All Smartphones</h2>
+                        <p>
+                            Search, filter, compare and shortlist phones.
+                        </p>
+                    </div>
+
+                    <strong id="resultCount">0 phones</strong>
+                </div>
+
+                <div class="filters">
+
+                    <div class="field wide">
+                        <input
+                            id="search"
+                            type="search"
+                            placeholder="🔎 Search model, brand or city..."
+                        >
+                    </div>
+
+                    <div class="field">
+                        <select id="brand">
+                            <option value="all">All Brands</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <select id="condition">
+                            <option value="all">Any Condition</option>
+                            <option>Excellent</option>
+                            <option>Very Good</option>
+                            <option>Good</option>
+                            <option>Fair</option>
+                            <option>New</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <select id="price">
+                            <option value="all">Any Price</option>
+                            <option value="0-15000">Under ₹15K</option>
+                            <option value="15000-25000">₹15K–₹25K</option>
+                            <option value="25000-40000">₹25K–₹40K</option>
+                            <option value="40000-999999">₹40K+</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <select id="sort">
+                            <option value="featured">Featured</option>
+                            <option value="low">Price: Low → High</option>
+                            <option value="high">Price: High → Low</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="discount">Biggest Discount</option>
+                        </select>
+                    </div>
+
+                    <button class="btn secondary reset" id="reset">
+                        Reset
+                    </button>
+
+                </div>
+
+                <div class="grid" id="productGrid"></div>
+
+                <div class="empty" id="empty">
+                    <h3>📱 No phones found</h3>
+                    <p>Try another search or change the filters.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="section" id="newPhones">
+            <div class="container">
+
+                <div class="section-head">
+                    <div>
+                        <h2>✨ New Mobile Collection</h2>
+                        <p>New-phone demo listings.</p>
+                    </div>
+                </div>
+
+                <div class="grid" id="newGrid"></div>
+
+            </div>
+        </section>
+
+        <section class="section" id="why">
+            <div class="container">
+
+                <div class="section-head">
+                    <div>
+                        <h2>Why MobileMart?</h2>
+                        <p>
+                            Useful tools for a better smartphone shopping experience.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+
+                    <div class="feature">
+                        <div class="feature-icon">🛡️</div>
+                        <h3>Clear Listings</h3>
+                        <p>
+                            Condition, battery, storage, RAM and seller
+                            information are shown together.
+                        </p>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-icon">⚖️</div>
+                        <h3>Easy Compare</h3>
+                        <p>
+                            Add up to three phones and compare important
+                            specifications side by side.
+                        </p>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-icon">❤️</div>
+                        <h3>Wishlist</h3>
+                        <p>
+                            Save phones locally and check them again later.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section class="section" id="sell">
+            <div class="container">
+
+                <div class="sell">
+
+                    <div>
+                        <h2>Have an old phone?</h2>
+                        <p>
+                            Create your own demo listing with price and condition.
+                        </p>
+                    </div>
+
+                    <button class="btn primary" id="sellBtn">
+                        ＋ Sell Your Phone
+                    </button>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+
+        <div class="container footer-grid">
+
+            <div>
+                <a class="logo" href="#home">
+                    <span class="logo-icon">📱</span>
+                    Mobile<b>Mart</b>
+                </a>
+
+                <p style="margin-top:10px;">
+                    A professional single-file smartphone marketplace
+                    demo built using HTML, CSS and JavaScript.
+                </p>
+            </div>
+
+            <div>
+                <h3>Shop</h3>
+                <a href="#phones">All Phones</a>
+                <a href="#newPhones">New Mobiles</a>
+                <a href="#deals">Deals</a>
+            </div>
+
+            <div>
+                <h3>Tools</h3>
+                <a href="#" id="footWish">Wishlist</a>
+                <a href="#" id="footCart">Cart</a>
+                <a href="#" id="footCompare">Compare</a>
+            </div>
+
+            <div>
+                <h3>About</h3>
+                <p>
+                    Front-end demo only. No real payment or order
+                    is processed.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="container copy">
+            <span>© 2026 MobileMart</span>
+            <span>Built as one index.html file</span>
+        </div>
+
+    </footer>
+
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="drawer" id="wishlistDrawer">
+
+        <div class="drawer-head">
+            <h2>❤️ Wishlist</h2>
+
+            <button class="close" data-close>
+                ✕
+            </button>
+        </div>
+
+        <div class="drawer-body" id="wishBody"></div>
+
+    </aside>
+
+    <aside class="drawer" id="cartDrawer">
+
+        <div class="drawer-head">
+            <h2>🛒 Cart</h2>
+
+            <button class="close" data-close>
+                ✕
+            </button>
+        </div>
+
+        <div class="drawer-body" id="cartBody"></div>
+
+        <div class="drawer-foot">
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    margin-bottom:10px;
+                "
+            >
+                <b>Total</b>
+                <b id="cartTotal">₹0</b>
+            </div>
+
+            <button class="btn primary" id="checkout" style="width:100%;">
+                Checkout
+            </button>
+
+        </div>
+
+    </aside>
+
+    <div class="modal" id="productModal">
+
+        <div class="modal-box">
+
+            <div class="modal-head">
+                <h2>Phone Details</h2>
+
+                <button class="close" data-modal-close>
+                    ✕
+                </button>
+            </div>
+
+            <div id="productDetail"></div>
+
+        </div>
+    </div>
+
+    <div class="modal" id="compareModal">
+
+        <div class="modal-box">
+
+            <div class="modal-head">
+                <h2>⚖️ Compare Phones</h2>
+
+                <button class="close" data-modal-close>
+                    ✕
+                </button>
+            </div>
+
+            <div id="compareBody"></div>
+
+        </div>
+    </div>
+
+    <div class="modal" id="sellModal">
+
+        <div class="modal-box">
+
+            <div class="modal-head">
+                <h2>📱 Sell Your Phone</h2>
+
+                <button class="close" data-modal-close>
+                    ✕
+                </button>
+            </div>
+
+            <form class="form-grid" id="sellForm">
+
+                <label>
+                    Brand
+                    <input id="sellBrand" placeholder="Apple" required>
+                </label>
+
+                <label>
+                    Model
+                    <input id="sellModel" placeholder="iPhone 13" required>
+                </label>
+
+                <label>
+                    Expected Price
+                    <input
+                        id="sellPrice"
+                        type="number"
+                        min="1"
+                        placeholder="25000"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Condition
+                    <select id="sellCondition" required>
+                        <option value="">Select</option>
+                        <option>Excellent</option>
+                        <option>Very Good</option>
+                        <option>Good</option>
+                        <option>Fair</option>
+                    </select>
+                </label>
+
+                <label>
+                    City
+                    <input id="sellCity" placeholder="Mumbai" required>
+                </label>
+
+                <label>
+                    Battery Health
+                    <input
+                        id="sellBattery"
+                        type="number"
+                        min="1"
+                        max="100"
+                        placeholder="90"
+                    >
+                </label>
+
+                <label class="full">
+                    Description
+                    <textarea
+                        id="sellDesc"
+                        placeholder="Tell buyers about your phone..."
+                    ></textarea>
+                </label>
+
+                <label class="full">
+                    <button
+                        class="btn primary"
+                        style="width:100%;"
+                        type="submit"
+                    >
+                        Submit Demo Listing
+                    </button>
+                </label>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="checkoutModal">
+
+        <div class="modal-box">
+
+            <div class="modal-head">
+                <h2>🛍️ Demo Checkout</h2>
+
+                <button class="close" data-modal-close>
+                    ✕
+                </button>
+            </div>
+
+            <form class="form-grid" id="checkoutForm">
+
+                <label>
+                    Full Name
+                    <input placeholder="Your name" required>
+                </label>
+
+                <label>
+                    Mobile
+                    <input
+                        type="tel"
+                        placeholder="10 digit number"
+                        required
+                    >
+                </label>
+
+                <label class="full">
+                    Address
+                    <textarea
+                        placeholder="Delivery address"
+                        required
+                    ></textarea>
+                </label>
+
+                <label class="full">
+                    Payment
+                    <select required>
+                        <option value="">Choose payment</option>
+                        <option>Cash on Delivery</option>
+                        <option>UPI (demo)</option>
+                        <option>Card (demo)</option>
+                    </select>
+                </label>
+
+                <label class="full">
+                    <button
+                        class="btn primary"
+                        style="width:100%;"
+                        type="submit"
+                    >
+                        Place Demo Order
+                    </button>
+                </label>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                type: "used",
+                brand: "Apple",
+                name: "iPhone 13",
+                price: 38999,
+                old: 45999,
+                discount: 15,
+                condition: "Excellent",
+                rating: 4.7,
+                reviews: 184,
+                ram: "4 GB",
+                storage: "128 GB",
+                battery: "91%",
+                camera: "12MP Dual",
+                display: "6.1 OLED",
+                city: "Mumbai",
+                seller: "Tech Resale",
+                verified: true,
+                deal: true,
+                emoji: "📱"
+            },
+            {
+                id: 2,
+                type: "used",
+                brand: "Samsung",
+                name: "Galaxy S22",
+                price: 27999,
+                old: 36999,
+                discount: 24,
+                condition: "Very Good",
+                rating: 4.5,
+                reviews: 121,
+                ram: "8 GB",
+                storage: "128 GB",
+                battery: "88%",
+                camera: "50MP Triple",
+                display: "6.1 AMOLED",
+                city: "Mumbai",
+                seller: "Phone Hub",
+                verified: true,
+                deal: true,
+                emoji: "📱"
+            },
+            {
+                id: 3,
+                type: "used",
+                brand: "OnePlus",
+                name: "OnePlus 11R",
+                price: 24999,
+                old: 31999,
+                discount: 22,
+                condition: "Excellent",
+                rating: 4.6,
+                reviews: 98,
+                ram: "8 GB",
+                storage: "128 GB",
+                battery: "94%",
+                camera: "50MP Triple",
+                display: "6.74 AMOLED",
+                city: "Pune",
+                seller: "Gadget Store",
+                verified: true,
+                deal: true,
+                emoji: "📱"
+            },
+            {
+                id: 4,
+                type: "used",
+                brand: "Vivo",
+                name: "Vivo X90",
+                price: 29999,
+                old: 39999,
+                discount: 25,
+                condition: "Very Good",
+                rating: 4.4,
+                reviews: 76,
+                ram: "8 GB",
+                storage: "256 GB",
+                battery: "87%",
+                camera: "50MP Triple",
+                display: "6.78 AMOLED",
+                city: "Mumbai",
+                seller: "Smart Deals",
+                verified: true,
+                deal: false,
+                emoji: "📱"
+            },
+            {
+                id: 5,
+                type: "used",
+                brand: "Google",
+                name: "Pixel 7",
+                price: 21999,
+                old: 29999,
+                discount: 27,
+                condition: "Good",
+                rating: 4.3,
+                reviews: 88,
+                ram: "8 GB",
+                storage: "128 GB",
+                battery: "85%",
+                camera: "50MP Dual",
+                display: "6.3 OLED",
+                city: "Thane",
+                seller: "Pixel Point",
+                verified: true,
+                deal: true,
+                emoji: "📱"
+            },
+            {
+                id: 6,
+                type: "used",
+                brand: "Motorola",
+                name: "Edge 40",
+                price: 17999,
+                old: 24999,
+                discount: 28,
+                condition: "Excellent",
+                rating: 4.5,
+                reviews: 63,
+                ram: "8 GB",
+                storage: "256 GB",
+                battery: "93%",
+                camera: "50MP Dual",
+                display: "6.55 OLED",
+                city: "Mumbai",
+                seller: "Moto Market",
+                verified: true,
+                deal: false,
+                emoji: "📱"
+            },
+            {
+                id: 7,
+                type: "used",
+                brand: "Nothing",
+                name: "Phone (2)",
+                price: 26999,
+                old: 39999,
+                discount: 33,
+                condition: "Very Good",
+                rating: 4.4,
+                reviews: 71,
+                ram: "12 GB",
+                storage: "256 GB",
+                battery: "90%",
+                camera: "50MP Dual",
+                display: "6.7 OLED",
+                city: "Navi Mumbai",
+                seller: "Nothing Hub",
+                verified: true,
+                deal: true,
+                emoji: "📱"
+            },
+            {
+                id: 8,
+                type: "used",
+                brand: "Redmi",
+                name: "Note 13 Pro+",
+                price: 16999,
+                old: 23999,
+                discount: 29,
+                condition: "Good",
+                rating: 4.2,
+                reviews: 54,
+                ram: "8 GB",
+                storage: "256 GB",
+                battery: "89%",
+                camera: "200MP Triple",
+                display: "6.67 AMOLED",
+                city: "Mumbai",
+                seller: "Budget Mobiles",
+                verified: true,
+                deal: false,
+                emoji: "📱"
+            },
+            {
+                id: 9,
+                type: "used",
+                brand: "Apple",
+                name: "iPhone 12",
+                price: 27999,
+                old: 35999,
+                discount: 22,
+                condition: "Very Good",
+                rating: 4.6,
+                reviews: 203,
+                ram: "4 GB",
+                storage: "128 GB",
+                battery: "86%",
+                camera: "12MP Dual",
+                display: "6.1 OLED",
+                city: "Mumbai",
+                seller: "iStore Resale",
+                verified: true,
+                deal: false,
+                emoji: "📱"
+            },
+            {
+                id: 10,
+                type: "used",
+                brand: "Samsung",
+                name: "Galaxy S21 FE",
+                price: 18999,
+                old: 28999,
+                discount: 34,
+                condition: "Good",
+                rating: 4.4,
+                reviews: 91,
+                ram: "8 GB",
+                storage: "128 GB",
+                battery: "84%",
+                camera: "12MP Triple",
+                display: "6.4 AMOLED",
+                city: "Thane",
+                seller: "Galaxy Used",
+                verified: true,
+                deal: true,
+                emoji: "📱"
+            },
+            {
+                id: 11,
+                type: "used",
+                brand: "OnePlus",
+                name: "Nord 3",
+                price: 15999,
+                old: 22999,
+                discount: 30,
+                condition: "Good",
+                rating: 4.3,
+                reviews: 67,
+                ram: "8 GB",
+                storage: "128 GB",
+                battery: "88%",
+                camera: "50MP Triple",
+                display: "6.74 AMOLED",
+                city: "Mumbai",
+                seller: "OnePlus Resale",
+                verified: true,
+                deal: false,
+                emoji: "📱"
+            },
+            {
+                id: 12,
+                type: "used",
+                brand: "Oppo",
+                name: "Reno 10 Pro",
+                price: 23999,
+                old: 32999,
+                discount: 27,
+                condition: "Very Good",
+                rating: 4.4,
+                reviews: 58,
+                ram: "12 GB",
+                storage: "256 GB",
+                battery: "91%",
+                camera: "50MP Triple",
+                display: "6.7 AMOLED",
+                city: "Pune",
+                seller: "Oppo Market",
+                verified: true,
+                deal: false,
+                emoji: "📱"
+            },
+            {
+                id: 13,
+                type: "new",
+                brand: "Apple",
+                name: "iPhone 15",
+                price: 59999,
+                old: 69999,
+                discount: 14,
+                condition: "New",
+                rating: 4.8,
+                reviews: 412,
+                ram: "6 GB",
+                storage: "128 GB",
+                battery: "100%",
+                camera: "48MP Dual",
+                display: "6.1 OLED",
+                city: "Mumbai",
+                seller: "MobileMart Store",
+                verified: true,
+                deal: true,
+                emoji: "📱"
+            },
+            {
+                id: 14,
+                type: "new",
+                brand: "Samsung",
+                name: "Galaxy S24",
+                price: 64999,
+                old: 74999,
+                discount: 13,
+                condition: "New",
+                rating: 4.8,
+                reviews: 356,
+                ram: "8 GB",
+                storage: "256 GB",
+                battery: "100%",
+                camera: "50MP Triple",
+                display: "6.2 AMOLED",
+                city: "Mumbai",
+                seller: "MobileMart Store",
+                verified: true,
+                deal: true,
+                emoji: "📱"
+            },
+            {
+                id: 15,
+                type: "new",
+                brand: "OnePlus",
+                name: "OnePlus 12",
+                price: 57999,
+                old: 64999,
+                discount: 11,
+                condition: "New",
+                rating: 4.7,
+                reviews: 291,
+                ram: "12 GB",
+                storage: "256 GB",
+                battery: "100%",
+                camera: "50MP Triple",
+                display: "6.82 AMOLED",
+                city: "Mumbai",
+                seller: "MobileMart Store",
+                verified: true,
+                deal: false,
+                emoji: "📱"
+            },
+            {
+                id: 16,
+                type: "new",
+                brand: "Google",
+                name: "Pixel 9",
+                price: 67999,
+                old: 79999,
+                discount: 15,
+                condition: "New",
+                rating: 4.7,
+                reviews: 245,
+                ram: "12 GB",
+                storage: "256 GB",
+                battery: "100%",
+                camera: "50MP Dual",
+                display: "6.3 OLED",
+                city: "Mumbai",
+                seller: "Pixel Store",
+                verified: true,
+                deal: false,
+                emoji: "📱"
+            }
+        ];
+
+        let wishlist = JSON.parse(
+            localStorage.getItem("mm_wishlist") || "[]"
+        );
+
+        let cart = JSON.parse(
+            localStorage.getItem("mm_cart") || "[]"
+        );
+
+        let compare = JSON.parse(
+            localStorage.getItem("mm_compare") || "[]"
+        );
+
+        let custom = JSON.parse(
+            localStorage.getItem("mm_custom") || "[]"
+        );
+
+        const $ = (selector) => {
+            return document.querySelector(selector);
+        };
+
+        const $$ = (selector) => {
+            return [...document.querySelectorAll(selector)];
+        };
+
+        const money = (number) => {
+            return "₹" + Number(number).toLocaleString("en-IN");
+        };
+
+        function saveData() {
+            localStorage.setItem(
+                "mm_wishlist",
+                JSON.stringify(wishlist)
+            );
+
+            localStorage.setItem(
+                "mm_cart",
+                JSON.stringify(cart)
+            );
+
+            localStorage.setItem(
+                "mm_compare",
+                JSON.stringify(compare)
+            );
+
+            localStorage.setItem(
+                "mm_custom",
+                JSON.stringify(custom)
+            );
+        }
+
+        function getProduct(id) {
+            return products.find((product) => product.id === id);
+        }
+
+        function stars(rating) {
+            const rounded = Math.round(rating);
+
+            return (
+                "★".repeat(rounded) +
+                "☆".repeat(5 - rounded)
+            );
+        }
+
+        function showToast(message) {
+            const toast = $("#toast");
+
+            toast.textContent = message;
+            toast.classList.add("show");
+
+            clearTimeout(window.toastTimer);
+
+            window.toastTimer = setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2200);
+        }
+
+        function closeAll() {
+            $$(".drawer, .modal, .mobile-nav").forEach((element) => {
+                element.classList.remove("show");
+            });
+
+            $("#overlay").classList.remove("show");
+            document.body.classList.remove("locked");
+        }
+
+        function openDrawer(id) {
+            closeAll();
+
+            $("#" + id).classList.add("show");
+            $("#overlay").classList.add("show");
+            document.body.classList.add("locked");
+        }
+
+        function openModal(id) {
+            closeAll();
+
+            $("#" + id).classList.add("show");
+            document.body.classList.add("locked");
+        }
+
+        function productCard(product) {
+            const wished = wishlist.includes(product.id);
+            const compared = compare.includes(product.id);
+
+            return `
+                <article class="card">
+
+                    <div class="photo">
+
+                        <span class="tag">
+                            ${product.condition}
+                        </span>
+
+                        <button
+                            class="heart ${wished ? "on" : ""}"
+                            onclick="toggleWishlist(${product.id})"
+                        >
+                            ${wished ? "♥" : "♡"}
+                        </button>
+
+                        <div class="phone-art">
+                            ${product.emoji}
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="brand">
+                            ${product.brand}
+                        </div>
+
+                        <h3>
+                            ${product.name}
+                        </h3>
+
+                        <div class="condition">
+                            📍 ${product.city} • ${product.seller}
+                        </div>
+
+                        <div class="rating">
+                            ${stars(product.rating)}
+                            <span>
+                                ${product.rating}
+                                (${product.reviews})
+                            </span>
+                        </div>
+
+                        <div class="price">
+
+                            <strong>
+                                ${money(product.price)}
+                            </strong>
+
+                            <span class="old">
+                                ${money(product.old)}
+                            </span>
+
+                            <span class="discount">
+                                ${product.discount}% off
+                            </span>
+
+                        </div>
+
+                        <div class="specs">
+
+                            <span class="spec">
+                                ${product.ram}
+                            </span>
+
+                            <span class="spec">
+                                ${product.storage}
+                            </span>
+
+                            <span class="spec">
+                                Battery ${product.battery}
+                            </span>
+
+                        </div>
+
+                        <div class="card-actions">
+
+                            <button
+                                onclick="showDetails(${product.id})"
+                            >
+                                Details
+                            </button>
+
+                            <button
+                                onclick="toggleCompare(${product.id})"
+                            >
+                                ${compared ? "✓ Compared" : "⚖ Compare"}
+                            </button>
+
+                            <button
+                                class="buy"
+                                onclick="addCart(${product.id})"
+                            >
+                                Add to Cart
+                            </button>
+
+                            <button
+                                onclick="toggleWishlist(${product.id})"
+                            >
+                                ${wished ? "♥ Saved" : "♡ Wishlist"}
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+            `;
+        }
+
+        function getFilteredProducts() {
+            const query = $("#search").value.trim().toLowerCase();
+            const brand = $("#brand").value;
+            const condition = $("#condition").value;
+            const price = $("#price").value;
+            const sort = $("#sort").value;
+
+            let list = products.filter((product) => {
+
+                const searchable = `
+                    ${product.brand}
+                    ${product.name}
+                    ${product.city}
+                    ${product.seller}
+                `.toLowerCase();
+
+                const matchesSearch =
+                    !query || searchable.includes(query);
+
+                const matchesBrand =
+                    brand === "all" || product.brand === brand;
+
+                const matchesCondition =
+                    condition === "all" ||
+                    product.condition === condition;
+
+                const matchesPrice =
+                    price === "all" ||
+                    inPriceRange(product.price, price);
+
+                return (
+                    matchesSearch &&
+                    matchesBrand &&
+                    matchesCondition &&
+                    matchesPrice
+                );
+            });
+
+            if (sort === "low") {
+                list.sort((a, b) => a.price - b.price);
+            }
+
+            if (sort === "high") {
+                list.sort((a, b) => b.price - a.price);
+            }
+
+            if (sort === "rating") {
+                list.sort((a, b) => b.rating - a.rating);
+            }
+
+            if (sort === "discount") {
+                list.sort((a, b) => b.discount - a.discount);
+            }
+
+            return list;
+        }
+
+        function inPriceRange(number, range) {
+            if (range === "all") {
+                return true;
+            }
+
+            const [minimum, maximum] = range
+                .split("-")
+                .map(Number);
+
+            return (
+                number >= minimum &&
+                number <= maximum
+            );
+        }
+
+        function renderProducts() {
+            const list = getFilteredProducts();
+
+            $("#productGrid").innerHTML = list
+                .map(productCard)
+                .join("");
+
+            $("#resultCount").textContent =
+                list.length +
+                " phone" +
+                (list.length === 1 ? "" : "s");
+
+            $("#empty").classList.toggle(
+                "show",
+                list.length === 0
+            );
+
+            $("#statPhones").textContent = products.length;
+        }
+
+        function renderNewPhones() {
+            const newProducts = products.filter(
+                (product) => product.type === "new"
+            );
+
+            $("#newGrid").innerHTML = newProducts
+                .map(productCard)
+                .join("");
+        }
+
+        function renderDeals() {
+            const deals = products
+                .filter((product) => product.deal)
+                .slice(0, 4);
+
+            $("#dealGrid").innerHTML = deals
+                .map(productCard)
+                .join("");
+        }
+
+        function populateBrands() {
+            const select = $("#brand");
+
+            const brands = [
+                ...new Set(
+                    products.map((product) => product.brand)
+                )
+            ].sort();
+
+            brands.forEach((brand) => {
+                select.insertAdjacentHTML(
+                    "beforeend",
+                    `<option value="${brand}">
+                        ${brand}
+                    </option>`
+                );
+            });
+        }
+
+        function updateCounts() {
+            $("#wishCount").textContent =
+                wishlist.length;
+
+            $("#cartCount").textContent =
+                cart.reduce(
+                    (total, item) => total + item.qty,
+                    0
+                );
+        }
+
+        function toggleWishlist(id) {
+            if (wishlist.includes(id)) {
+                wishlist = wishlist.filter(
+                    (item) => item !== id
+                );
+
+                showToast("Removed from wishlist");
+            } else {
+                wishlist.push(id);
+
+                showToast("Added to wishlist");
+            }
+
+            saveData();
+            updateCounts();
+            renderProducts();
+            renderNewPhones();
+            renderDeals();
+            renderWishlist();
+        }
+
+        function toggleCompare(id) {
+            if (compare.includes(id)) {
+                compare = compare.filter(
+                    (item) => item !== id
+                );
+
+                showToast("Removed from compare");
+            } else {
+
+                if (compare.length >= 3) {
+                    showToast("Compare up to 3 phones");
+                    return;
+                }
+
+                compare.push(id);
+
+                showToast("Added to compare");
+            }
+
+            saveData();
+            renderProducts();
+            renderNewPhones();
+            renderDeals();
+        }
+
+        function addCart(id) {
+            const existing = cart.find(
+                (item) => item.id === id
+            );
+
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({
+                    id: id,
+                    qty: 1
+                });
+            }
+
+            saveData();
+            updateCounts();
+            renderCart();
+
+            showToast("Phone added to cart");
+        }
+
+        function removeCart(id) {
+            cart = cart.filter(
+                (item) => item.id !== id
+            );
+
+            saveData();
+            updateCounts();
+            renderCart();
+
+            showToast("Removed from cart");
+        }
+
+        function changeQuantity(id, change) {
+            const item = cart.find(
+                (cartItem) => cartItem.id === id
+            );
+
+            if (!item) {
+                return;
+            }
+
+            item.qty += change;
+
+            if (item.qty <= 0) {
+                removeCart(id);
+                return;
+            }
+
+            saveData();
+            updateCounts();
+            renderCart();
+        }
+
+        function renderCart() {
+            const body = $("#cartBody");
+
+            if (cart.length === 0) {
+                body.innerHTML = `
+                    <div class="empty show">
+                        🛒
+                        <br><br>
+                        Your cart is empty.
+                    </div>
+                `;
+
+                $("#cartTotal").textContent = "₹0";
+                return;
+            }
+
+            let total = 0;
+
+            body.innerHTML = cart
+                .map((item) => {
+
+                    const product = getProduct(item.id);
+
+                    total +=
+                        product.price * item.qty;
+
+                    return `
+                        <div class="cart-row">
+
+                            <div class="mini-photo">
+                                ${product.emoji}
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    ${product.name}
+                                </h4>
+
+                                <p>
+                                    ${money(product.price)}
+                                    × ${item.qty}
+                                </p>
+
+                                <div class="qty">
+
+                                    <button
+                                        onclick="changeQuantity(
+                                            ${product.id},
+                                            -1
+                                        )"
+                                    >
+                                        −
+                                    </button>
+
+                                    <b>${item.qty}</b>
+
+                                    <button
+                                        onclick="changeQuantity(
+                                            ${product.id},
+                                            1
+                                        )"
+                                    >
+                                        +
+                                    </button>
+
+                                    <button
+                                        onclick="removeCart(
+                                            ${product.id}
+                                        )"
+                                    >
+                                        🗑
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    `;
+                })
+                .join("");
+
+            $("#cartTotal").textContent =
+                money(total);
+        }
+
+        function renderWishlist() {
+            const body = $("#wishBody");
+
+            const list = wishlist
+                .map(getProduct)
+                .filter(Boolean);
+
+            if (list.length === 0) {
+                body.innerHTML = `
+                    <div class="empty show">
+                        ♡
+                        <br><br>
+                        No saved phones yet.
+                    </div>
+                `;
+
+                return;
+            }
+
+            body.innerHTML = list
+                .map((product) => {
+
+                    return `
+                        <div class="cart-row">
+
+                            <div class="mini-photo">
+                                ${product.emoji}
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    ${product.name}
+                                </h4>
+
+                                <p>
+                                    ${money(product.price)}
+                                    • ${product.condition}
+                                </p>
+
+                                <button
+                                    class="btn primary"
+                                    style="
+                                        padding:6px 9px;
+                                        margin-top:5px;
+                                        font-size:11px;
+                                    "
+                                    onclick="showDetails(
+                                        ${product.id}
+                                    )"
+                                >
+                                    View
+                                </button>
+
+                                <button
+                                    class="btn secondary"
+                                    style="
+                                        padding:6px 9px;
+                                        font-size:11px;
+                                    "
+                                    onclick="
+                                        toggleWishlist(
+                                            ${product.id}
+                                        );
+                                        renderWishlist();
+                                    "
+                                >
+                                    Remove
+                                </button>
+
+                            </div>
+
+                        </div>
+                    `;
+                })
+                .join("");
+        }
+
+        function showDetails(id) {
+            const product = getProduct(id);
+
+            $("#productDetail").innerHTML = `
+                <div class="detail">
+
+                    <div class="detail-photo">
+                        ${product.emoji}
+                    </div>
+
+                    <div>
+
+                        <div class="brand">
+                            ${product.brand}
+                            •
+                            ${product.condition}
+                        </div>
+
+                        <h2 style="margin:5px 0;">
+                            ${product.name}
+                        </h2>
+
+                        <p>
+                            📍 ${product.city}
+                            • Seller:
+                            ${product.seller}
+                            ${product.verified ? " ✓" : ""}
+                        </p>
+
+                        <div class="rating">
+                            ${stars(product.rating)}
+                            <span>
+                                ${product.rating}/5
+                                • ${product.reviews} reviews
+                            </span>
+                        </div>
+
+                        <div class="big-price">
+                            ${money(product.price)}
+                            <span class="old">
+                                ${money(product.old)}
+                            </span>
+                        </div>
+
+                        <div class="info-grid">
+
+                            <div class="info">
+                                <small>Storage</small>
+                                ${product.storage}
+                            </div>
+
+                            <div class="info">
+                                <small>RAM</small>
+                                ${product.ram}
+                            </div>
+
+                            <div class="info">
+                                <small>Battery</small>
+                                ${product.battery}
+                            </div>
+
+                            <div class="info">
+                                <small>Display</small>
+                                ${product.display}
+                            </div>
+
+                            <div class="info">
+                                <small>Camera</small>
+                                ${product.camera}
+                            </div>
+
+                            <div class="info">
+                                <small>Condition</small>
+                                ${product.condition}
+                            </div>
+
+                        </div>
+
+                        <div
+                            style="
+                                display:flex;
+                                gap:8px;
+                                flex-wrap:wrap;
+                            "
+                        >
+
+                            <button
+                                class="btn primary"
+                                onclick="
+                                    addCart(${product.id});
+                                    closeAll();
+                                "
+                            >
+                                Add to Cart
+                            </button>
+
+                            <button
+                                class="btn secondary"
+                                onclick="
+                                    toggleWishlist(
+                                        ${product.id}
+                                    )
+                                "
+                            >
+                                ♡ Wishlist
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            `;
+
+            openModal("productModal");
+        }
+
+        function renderCompare() {
+            const list = compare
+                .map(getProduct)
+                .filter(Boolean);
+
+            if (list.length === 0) {
+                $("#compareBody").innerHTML = `
+                    <div class="empty show">
+                        ⚖️
+                        <br><br>
+                        Add phones using Compare.
+                    </div>
+                `;
+
+                return;
+            }
+
+            const rows = [
+                ["Brand", ...list.map((p) => p.brand)],
+                ["Model", ...list.map((p) => p.name)],
+                ["Price", ...list.map((p) => money(p.price))],
+                ["Condition", ...list.map((p) => p.condition)],
+                ["RAM", ...list.map((p) => p.ram)],
+                ["Storage", ...list.map((p) => p.storage)],
+                ["Battery", ...list.map((p) => p.battery)],
+                ["Camera", ...list.map((p) => p.camera)],
+                ["Display", ...list.map((p) => p.display)],
+                ["Rating", ...list.map((p) => p.rating + " ★")]
+            ];
+
+            $("#compareBody").innerHTML = `
+                <table class="compare-table">
+
+                    ${rows.map((row) => `
+                        <tr>
+
+                            ${row.map((value, index) => {
+                                if (index === 0) {
+                                    return `<th>${value}</th>`;
+                                }
+
+                                return `<td>${value}</td>`;
+                            }).join("")}
+
+                        </tr>
+                    `).join("")}
+
+                </table>
+
+                <button
+                    class="btn secondary"
+                    style="margin-top:12px;"
+                    onclick="
+                        compare = [];
+                        saveData();
+                        renderProducts();
+                        renderNewPhones();
+                        renderDeals();
+                        renderCompare();
+                    "
+                >
+                    Clear Compare
+                </button>
+            `;
+        }
+
+        $("#search").addEventListener(
+            "input",
+            renderProducts
+        );
+
+        $("#brand").addEventListener(
+            "change",
+            renderProducts
+        );
+
+        $("#condition").addEventListener(
+            "change",
+            renderProducts
+        );
+
+        $("#price").addEventListener(
+            "change",
+            renderProducts
+        );
+
+        $("#sort").addEventListener(
+            "change",
+            renderProducts
+        );
+
+        $("#reset").addEventListener(
+            "click",
+            () => {
+
+                $("#search").value = "";
+                $("#brand").value = "all";
+                $("#condition").value = "all";
+                $("#price").value = "all";
+                $("#sort").value = "featured";
+
+                renderProducts();
+            }
+        );
+
+        $("#searchBtn").addEventListener(
+            "click",
+            () => {
+                $("#head").classList.toggle(
+                    "search-open"
+                );
+            }
+        );
+
+        $("#globalSearchBtn").addEventListener(
+            "click",
+            () => {
+
+                $("#search").value =
+                    $("#globalSearch").value;
+
+                document
+                    .getElementById("phones")
+                    .scrollIntoView();
+
+                renderProducts();
+            }
+        );
+
+        $("#globalSearch").addEventListener(
+            "keydown",
+            (event) => {
+
+                if (event.key === "Enter") {
+                    $("#globalSearchBtn").click();
+                }
+            }
+        );
+
+        $("#wishBtn").addEventListener(
+            "click",
+            () => {
+                renderWishlist();
+                openDrawer("wishlistDrawer");
+            }
+        );
+
+        $("#cartBtn").addEventListener(
+            "click",
+            () => {
+                renderCart();
+                openDrawer("cartDrawer");
+            }
+        );
+
+        $("#compareBtn").addEventListener(
+            "click",
+            () => {
+                renderCompare();
+                openModal("compareModal");
+            }
+        );
+
+        $("#footWish").addEventListener(
+            "click",
+            (event) => {
+                event.preventDefault();
+                renderWishlist();
+                openDrawer("wishlistDrawer");
+            }
+        );
+
+        $("#footCart").addEventListener(
+            "click",
+            (event) => {
+                event.preventDefault();
+                renderCart();
+                openDrawer("cartDrawer");
+            }
+        );
+
+        $("#footCompare").addEventListener(
+            "click",
+            (event) => {
+                event.preventDefault();
+                renderCompare();
+                openModal("compareModal");
+            }
+        );
+
+        $("#sellBtn").addEventListener(
+            "click",
+            () => openModal("sellModal")
+        );
+
+        $("#heroSell").addEventListener(
+            "click",
+            () => openModal("sellModal")
+        );
+
+        $("#checkout").addEventListener(
+            "click",
+            () => {
+
+                if (cart.length === 0) {
+                    showToast("Your cart is empty");
+                    return;
+                }
+
+                openModal("checkoutModal");
+            }
+        );
+
+        $("#checkoutForm").addEventListener(
+            "submit",
+            (event) => {
+
+                event.preventDefault();
+
+                cart = [];
+
+                saveData();
+                updateCounts();
+                renderCart();
+                closeAll();
+
+                showToast(
+                    "Demo order placed successfully"
+                );
+            }
+        );
+
+        $("#sellForm").addEventListener(
+            "submit",
+            (event) => {
+
+                event.preventDefault();
+
+                const price =
+                    Number($("#sellPrice").value);
+
+                const battery =
+                    $("#sellBattery").value;
+
+                const product = {
+                    id: Date.now(),
+                    type: "used",
+                    brand: $("#sellBrand").value,
+                    name: $("#sellModel").value,
+                    price: price,
+                    old: price,
+                    discount: 0,
+                    condition: $("#sellCondition").value,
+                    rating: 5,
+                    reviews: 0,
+                    ram: "Seller provided",
+                    storage: "Seller provided",
+                    battery: battery
+                        ? battery + "%"
+                        : "Not provided",
+                    camera: "Seller provided",
+                    display: "Seller provided",
+                    city: $("#sellCity").value,
+                    seller: "New Seller",
+                    verified: false,
+                    deal: false,
+                    emoji: "📱"
+                };
+
+                products.unshift(product);
+                custom.push(product);
+
+                saveData();
+
+                event.target.reset();
+
+                populateBrands();
+                renderProducts();
+                renderNewPhones();
+                renderDeals();
+
+                closeAll();
+
+                showToast(
+                    "Your demo listing was added"
+                );
+            }
+        );
+
+        $("#menuBtn").addEventListener(
+            "click",
+            () => {
+
+                closeAll();
+
+                $("#mobileNav").classList.add("show");
+                $("#overlay").classList.add("show");
+                document.body.classList.add("locked");
+            }
+        );
+
+        $("#menuClose").addEventListener(
+            "click",
+            closeAll
+        );
+
+        $$("[data-close]").forEach(
+            (button) => {
+                button.addEventListener(
+                    "click",
+                    closeAll
+                );
+            }
+        );
+
+        $$("[data-modal-close]").forEach(
+            (button) => {
+                button.addEventListener(
+                    "click",
+                    closeAll
+                );
+            }
+        );
+
+        $("#overlay").addEventListener(
+            "click",
+            closeAll
+        );
+
+        let countdownEnd =
+            Date.now() +
+            8 * 60 * 60 * 1000 +
+            30 * 60 * 1000;
+
+        function updateTimer() {
+
+            const remaining = Math.max(
+                0,
+                countdownEnd - Date.now()
+            );
+
+            const seconds =
+                Math.floor(remaining / 1000);
+
+            const hours =
+                Math.floor(seconds / 3600);
+
+            const minutes =
+                Math.floor(
+                    (seconds % 3600) / 60
+                );
+
+            const secs =
+                seconds % 60;
+
+            $("#hh").textContent =
+                String(hours).padStart(2, "0");
+
+            $("#mm").textContent =
+                String(minutes).padStart(2, "0");
+
+            $("#ss").textContent =
+                String(secs).padStart(2, "0");
+        }
+
+        populateBrands();
+        renderProducts();
+        renderNewPhones();
+        renderDeals();
+        renderCart();
+        renderWishlist();
+        renderCompare();
+        updateCounts();
+        updateTimer();
+
+        setInterval(
+            updateTimer,
+            1000
+        );
+    </script>
+
+</body>
+</html>
